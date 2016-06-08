@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="WhyWeIDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Area">
+          <Key>
+            <PropertyRef Name="AreaID" />
+          </Key>
+          <Property Name="AreaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Active" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reason">
+          <Key>
+            <PropertyRef Name="ReasonID" />
+          </Key>
+          <Property Name="ReasonID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Active" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'WhyWeID.dbo.sys_WhyWeId' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="sys_WhyWeId">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="PropertyId" />
+            <PropertyRef Name="PropertyValue" />
+            <PropertyRef Name="Active" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PropertyId" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="PropertyValue" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Active" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Visit">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SchoolId" Type="char" MaxLength="3" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="22" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="22" Nullable="false" />
+          <Property Name="ReasonForVisit" Type="int" Nullable="false" />
+          <Property Name="AreaToVisit" Type="int" Nullable="false" />
+          <Property Name="SchoolYear" Type="int" Nullable="false" />
+          <Property Name="VisitDate" Type="date" />
+          <Property Name="TimeIn" Type="time" Precision="7" />
+          <Property Name="TimeOut" Type="time" Precision="7" />
+        </EntityType>
+        <Association Name="FK_Visit_Area">
+          <End Role="Area" Type="Self.Area" Multiplicity="1" />
+          <End Role="Visit" Type="Self.Visit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Area">
+              <PropertyRef Name="AreaID" />
+            </Principal>
+            <Dependent Role="Visit">
+              <PropertyRef Name="AreaToVisit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Visit_Reason">
+          <End Role="Reason" Type="Self.Reason" Multiplicity="1" />
+          <End Role="Visit" Type="Self.Visit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reason">
+              <PropertyRef Name="ReasonID" />
+            </Principal>
+            <Dependent Role="Visit">
+              <PropertyRef Name="ReasonForVisit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WhyWeIDModelStoreContainer">
+          <EntitySet Name="Area" EntityType="Self.Area" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reason" EntityType="Self.Reason" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Visit" EntityType="Self.Visit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sys_WhyWeId" EntityType="Self.sys_WhyWeId" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [sys_WhyWeId].[ID] AS [ID], 
+    [sys_WhyWeId].[PropertyId] AS [PropertyId], 
+    [sys_WhyWeId].[PropertyValue] AS [PropertyValue], 
+    [sys_WhyWeId].[Active] AS [Active]
+    FROM [dbo].[sys_WhyWeId] AS [sys_WhyWeId]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Visit_Area" Association="Self.FK_Visit_Area">
+            <End Role="Area" EntitySet="Area" />
+            <End Role="Visit" EntitySet="Visit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Visit_Reason" Association="Self.FK_Visit_Reason">
+            <End Role="Reason" EntitySet="Reason" />
+            <End Role="Visit" EntitySet="Visit" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="WhyWeIDModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Area">
+          <Key>
+            <PropertyRef Name="AreaID" />
+          </Key>
+          <Property Name="AreaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Active" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="Visits" Relationship="Self.FK_Visit_Area" FromRole="Area" ToRole="Visit" />
+        </EntityType>
+        <EntityType Name="Reason">
+          <Key>
+            <PropertyRef Name="ReasonID" />
+          </Key>
+          <Property Name="ReasonID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Active" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="Visits" Relationship="Self.FK_Visit_Reason" FromRole="Reason" ToRole="Visit" />
+        </EntityType>
+        <EntityType Name="Visit">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SchoolId" Type="String" MaxLength="3" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="22" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="22" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ReasonForVisit" Type="Int32" Nullable="false" />
+          <Property Name="AreaToVisit" Type="Int32" Nullable="false" />
+          <Property Name="SchoolYear" Type="Int32" Nullable="false" />
+          <Property Name="VisitDate" Type="DateTime" Precision="0" />
+          <Property Name="TimeIn" Type="Time" Precision="7" />
+          <Property Name="TimeOut" Type="Time" Precision="7" />
+          <NavigationProperty Name="Area" Relationship="Self.FK_Visit_Area" FromRole="Visit" ToRole="Area" />
+          <NavigationProperty Name="Reason" Relationship="Self.FK_Visit_Reason" FromRole="Visit" ToRole="Reason" />
+        </EntityType>
+        <EntityType Name="sys_WhyWeId">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="PropertyId" />
+            <PropertyRef Name="PropertyValue" />
+            <PropertyRef Name="Active" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PropertyId" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PropertyValue" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Active" Type="Byte" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Visit_Area">
+          <End Role="Area" Type="Self.Area" Multiplicity="1" />
+          <End Role="Visit" Type="Self.Visit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Area">
+              <PropertyRef Name="AreaID" />
+            </Principal>
+            <Dependent Role="Visit">
+              <PropertyRef Name="AreaToVisit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Visit_Reason">
+          <End Role="Reason" Type="Self.Reason" Multiplicity="1" />
+          <End Role="Visit" Type="Self.Visit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reason">
+              <PropertyRef Name="ReasonID" />
+            </Principal>
+            <Dependent Role="Visit">
+              <PropertyRef Name="ReasonForVisit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WhyWeIDEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Areas" EntityType="Self.Area" />
+          <EntitySet Name="Reasons" EntityType="Self.Reason" />
+          <EntitySet Name="Visits" EntityType="Self.Visit" />
+          <EntitySet Name="sys_WhyWeId" EntityType="Self.sys_WhyWeId" />
+          <AssociationSet Name="FK_Visit_Area" Association="Self.FK_Visit_Area">
+            <End Role="Area" EntitySet="Areas" />
+            <End Role="Visit" EntitySet="Visits" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Visit_Reason" Association="Self.FK_Visit_Reason">
+            <End Role="Reason" EntitySet="Reasons" />
+            <End Role="Visit" EntitySet="Visits" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="WhyWeIDModelStoreContainer" CdmEntityContainer="WhyWeIDEntities">
+          <EntitySetMapping Name="Areas">
+            <EntityTypeMapping TypeName="WhyWeIDModel.Area">
+              <MappingFragment StoreEntitySet="Area">
+                <ScalarProperty Name="AreaID" ColumnName="AreaID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reasons">
+            <EntityTypeMapping TypeName="WhyWeIDModel.Reason">
+              <MappingFragment StoreEntitySet="Reason">
+                <ScalarProperty Name="ReasonID" ColumnName="ReasonID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Visits">
+            <EntityTypeMapping TypeName="WhyWeIDModel.Visit">
+              <MappingFragment StoreEntitySet="Visit">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="SchoolId" ColumnName="SchoolId" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="ReasonForVisit" ColumnName="ReasonForVisit" />
+                <ScalarProperty Name="AreaToVisit" ColumnName="AreaToVisit" />
+                <ScalarProperty Name="SchoolYear" ColumnName="SchoolYear" />
+                <ScalarProperty Name="VisitDate" ColumnName="VisitDate" />
+                <ScalarProperty Name="TimeIn" ColumnName="TimeIn" />
+                <ScalarProperty Name="TimeOut" ColumnName="TimeOut" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sys_WhyWeId">
+            <EntityTypeMapping TypeName="WhyWeIDModel.sys_WhyWeId">
+              <MappingFragment StoreEntitySet="sys_WhyWeId">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PropertyId" ColumnName="PropertyId" />
+                <ScalarProperty Name="PropertyValue" ColumnName="PropertyValue" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

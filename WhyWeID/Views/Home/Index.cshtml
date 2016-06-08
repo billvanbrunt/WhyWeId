@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<br /><br />
+<center>
+    <table>
+        <tr >
+            <td>
+                <a href="@Url.Action("Index", "Visits")">
+                    <div id="divStudentSignIn" class="jumbotron" onclick="window.open('Index', 'Visits');" style="font-size:x-large;font-weight:bold;color:#395b8b;border:groove;border-color:#395b8b;">
+                        Student Sign In
+                    </div>
+                </a>
+            </td>
+            <td >
+                <div id="divStudentSignOut" class="jumbotron" onclick="StudentSignOut_Click" style="font-size:x-large;font-weight:bold;color:#395b8b;border:groove;border-color:#395b8b;">
+                    Student Sign Out
+                </div>
+            </td>
+            <td >
+                <a href="@Url.Action("Index", "Visits")">
+                    <div id="divVitorSignIn" class="jumbotron"  style="font-size:x-large;font-weight:bold;color:#395b8b;border:groove;border-color:#395b8b;">
+                        Visitor Sign In/Out
+                    </div>
+             </a>
+</td>
+        </tr>
+    </table>
+
+</center>

@@ -1,0 +1,66 @@
+﻿@model IEnumerable<WhyWeID.Models.Visit>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+       
+      
+        <th>
+            @Html.DisplayNameFor(model => model.FullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VisitDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TimeIn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TimeOut)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Area)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Reason)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        
+       
+        <td>
+            @Html.DisplayFor(modelItem => item.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.VisitDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TimeIn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TimeOut)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Area.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Reason.Description)
+        </td>
+        <td>
+            @Html.ActionLink("Signout", "VisitorCheckOut", new { id=item.ID }) 
+        
+        </td>
+    </tr>
+}
+
+</table>
