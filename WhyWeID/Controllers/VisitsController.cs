@@ -71,7 +71,7 @@ namespace WhyWeID.Controllers
             var lSchoolYear = GetSchoolYear();
             var lIPAddress = GetIPAddress();
             visit.SchoolId = lSchoolId;
-           
+
 
             try
             {

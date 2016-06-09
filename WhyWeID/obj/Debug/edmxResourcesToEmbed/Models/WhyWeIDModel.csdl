@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WhyWeIDModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Area">
+    <Key>
+      <PropertyRef Name="AreaID" />
+    </Key>
+    <Property Name="AreaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="Visits" Relationship="Self.FK_Visit_Area" FromRole="Area" ToRole="Visit" />
+  </EntityType>
+  <EntityType Name="Reason">
+    <Key>
+      <PropertyRef Name="ReasonID" />
+    </Key>
+    <Property Name="ReasonID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="Visits" Relationship="Self.FK_Visit_Reason" FromRole="Reason" ToRole="Visit" />
+  </EntityType>
+  <EntityType Name="Visit">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SchoolId" Type="String" MaxLength="3" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="22" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="22" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ReasonForVisit" Type="Int32" Nullable="false" />
+    <Property Name="AreaToVisit" Type="Int32" Nullable="false" />
+    <Property Name="SchoolYear" Type="Int32" Nullable="false" />
+    <Property Name="VisitDate" Type="DateTime" Precision="0" />
+    <Property Name="TimeIn" Type="Time" Precision="7" />
+    <Property Name="TimeOut" Type="Time" Precision="7" />
+    <NavigationProperty Name="Area" Relationship="Self.FK_Visit_Area" FromRole="Visit" ToRole="Area" />
+    <NavigationProperty Name="Reason" Relationship="Self.FK_Visit_Reason" FromRole="Visit" ToRole="Reason" />
+  </EntityType>
+  <EntityType Name="sys_WhyWeId">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="PropertyId" />
+      <PropertyRef Name="PropertyValue" />
+      <PropertyRef Name="Active" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PropertyId" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PropertyValue" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Byte" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Visit_Area">
+    <End Role="Area" Type="Self.Area" Multiplicity="1" />
+    <End Role="Visit" Type="Self.Visit" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Area">
+        <PropertyRef Name="AreaID" />
+      </Principal>
+      <Dependent Role="Visit">
+        <PropertyRef Name="AreaToVisit" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Visit_Reason">
+    <End Role="Reason" Type="Self.Reason" Multiplicity="1" />
+    <End Role="Visit" Type="Self.Visit" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Reason">
+        <PropertyRef Name="ReasonID" />
+      </Principal>
+      <Dependent Role="Visit">
+        <PropertyRef Name="ReasonForVisit" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="WhyWeIDEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Areas" EntityType="Self.Area" />
+    <EntitySet Name="Reasons" EntityType="Self.Reason" />
+    <EntitySet Name="Visits" EntityType="Self.Visit" />
+    <EntitySet Name="sys_WhyWeId" EntityType="Self.sys_WhyWeId" />
+    <AssociationSet Name="FK_Visit_Area" Association="Self.FK_Visit_Area">
+      <End Role="Area" EntitySet="Areas" />
+      <End Role="Visit" EntitySet="Visits" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Visit_Reason" Association="Self.FK_Visit_Reason">
+      <End Role="Reason" EntitySet="Reasons" />
+      <End Role="Visit" EntitySet="Visits" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

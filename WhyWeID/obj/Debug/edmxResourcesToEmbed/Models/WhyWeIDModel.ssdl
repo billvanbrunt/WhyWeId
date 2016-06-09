@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WhyWeIDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Area">
+    <Key>
+      <PropertyRef Name="AreaID" />
+    </Key>
+    <Property Name="AreaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Active" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Reason">
+    <Key>
+      <PropertyRef Name="ReasonID" />
+    </Key>
+    <Property Name="ReasonID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Active" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'WhyWeID.dbo.sys_WhyWeId' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="sys_WhyWeId">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="PropertyId" />
+      <PropertyRef Name="PropertyValue" />
+      <PropertyRef Name="Active" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PropertyId" Type="varchar" MaxLength="25" Nullable="false" />
+    <Property Name="PropertyValue" Type="varchar" MaxLength="25" Nullable="false" />
+    <Property Name="Active" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Visit">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SchoolId" Type="char" MaxLength="3" Nullable="false" />
+    <Property Name="LastName" Type="varchar" MaxLength="22" Nullable="false" />
+    <Property Name="FirstName" Type="varchar" MaxLength="22" Nullable="false" />
+    <Property Name="ReasonForVisit" Type="int" Nullable="false" />
+    <Property Name="AreaToVisit" Type="int" Nullable="false" />
+    <Property Name="SchoolYear" Type="int" Nullable="false" />
+    <Property Name="VisitDate" Type="date" />
+    <Property Name="TimeIn" Type="time" Precision="7" />
+    <Property Name="TimeOut" Type="time" Precision="7" />
+  </EntityType>
+  <Association Name="FK_Visit_Area">
+    <End Role="Area" Type="Self.Area" Multiplicity="1" />
+    <End Role="Visit" Type="Self.Visit" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Area">
+        <PropertyRef Name="AreaID" />
+      </Principal>
+      <Dependent Role="Visit">
+        <PropertyRef Name="AreaToVisit" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Visit_Reason">
+    <End Role="Reason" Type="Self.Reason" Multiplicity="1" />
+    <End Role="Visit" Type="Self.Visit" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Reason">
+        <PropertyRef Name="ReasonID" />
+      </Principal>
+      <Dependent Role="Visit">
+        <PropertyRef Name="ReasonForVisit" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="WhyWeIDModelStoreContainer">
+    <EntitySet Name="Area" EntityType="Self.Area" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Reason" EntityType="Self.Reason" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Visit" EntityType="Self.Visit" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sys_WhyWeId" EntityType="Self.sys_WhyWeId" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [sys_WhyWeId].[ID] AS [ID], 
+    [sys_WhyWeId].[PropertyId] AS [PropertyId], 
+    [sys_WhyWeId].[PropertyValue] AS [PropertyValue], 
+    [sys_WhyWeId].[Active] AS [Active]
+    FROM [dbo].[sys_WhyWeId] AS [sys_WhyWeId]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_Visit_Area" Association="Self.FK_Visit_Area">
+      <End Role="Area" EntitySet="Area" />
+      <End Role="Visit" EntitySet="Visit" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Visit_Reason" Association="Self.FK_Visit_Reason">
+      <End Role="Reason" EntitySet="Reason" />
+      <End Role="Visit" EntitySet="Visit" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

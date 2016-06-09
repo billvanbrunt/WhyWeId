@@ -1,10 +1,10 @@
 ﻿@model WhyWeID.Models.Visit
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Visitor Sign in";
 }
 
-<h2>Create</h2>
+<h1 style="color:#395B8B;font-weight:bold;">Visitor Sign in</h1>
 
 
 @using (Html.BeginForm()) 
@@ -12,17 +12,9 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Visit</h4>
-        <hr />
+               <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.SchoolId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SchoolId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SchoolId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
+       
         <div class="form-group">
             @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -55,33 +47,14 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.VisitDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.VisitDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.VisitDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
+       
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.TimeIn, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TimeIn, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TimeIn, "", new { @class = "text-danger" })
-            </div>
-        </div>
+       
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.TimeOut, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TimeOut, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TimeOut, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Sign in" class="btn btn-default" style="background-color:darkgray;"/>
             </div>
         </div>
     </div>
